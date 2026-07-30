@@ -118,3 +118,20 @@ body {
   font-size: 13px;
   color: #6b7280;
 }
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-info h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.profile-info p {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 2px;
+}
