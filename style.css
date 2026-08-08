@@ -273,3 +273,30 @@ body {
 .itinerary-btn i {
   transition: 0.3s ease;
 }
+
+/* ========== Responsive Hero ========== */
+
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
+    margin: 20px;
+    padding: 25px;
+  }
+
+  .hero-content h2 {
+    font-size: 32px;
+  }
+
+  .hero-description {
+    max-width: 100%;
+  }
+
+  .trip-details {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hero-image {
+    min-height: 280px;
+  }
+}
