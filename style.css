@@ -300,3 +300,36 @@ body {
     min-height: 280px;
   }
 }
+
+/* ========== Responsive Navbar ========== */
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 14px 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .logo h1 {
+    font-size: 20px;
+  }
+
+  .logo i {
+    font-size: 24px;
+  }
+
+  .search {
+    order: 3;
+    flex-basis: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  .nav-actions {
+    margin-left: auto;
+  }
+
+  .profile-info {
+    display: none;
+  }
+}
