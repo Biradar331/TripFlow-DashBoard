@@ -564,3 +564,25 @@ body {
     font-size: 13px;
   }
 }
+
+/* ========== Widgets Section ========== */
+
+.widgets-section {
+  margin: 40px;
+}
+
+.widget-header {
+  margin-bottom: 24px;
+}
+
+.widget-header h2 {
+  color: #111827;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.widgets-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
