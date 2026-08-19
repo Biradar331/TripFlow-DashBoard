@@ -515,3 +515,52 @@ body {
 .timeline-item:hover .timeline-content h3 {
   color: #2563eb;
 }
+
+/* ========== Responsive Timeline ========== */
+
+@media (max-width: 768px) {
+  .timeline-section {
+    margin: 20px;
+  }
+
+  .section-header {
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .section-header h2 {
+    font-size: 24px;
+  }
+
+  .timeline {
+    padding: 25px 20px;
+  }
+
+  .timeline-item {
+    gap: 14px;
+    padding-bottom: 28px;
+  }
+
+  .timeline-marker {
+    width: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+
+  .timeline-content h3 {
+    font-size: 16px;
+  }
+
+  .timeline-content p {
+    font-size: 13px;
+  }
+
+  .timeline::before {
+    left: 39px;
+  }
+
+  .view-all-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
