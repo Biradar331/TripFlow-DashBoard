@@ -810,3 +810,149 @@ body {
 
   font-size: 14px;
 }
+
+/* ========== Flight Widget ========== */
+
+.flight-widget {
+  padding: 28px;
+
+  background-color: #ffffff;
+  border: 1px solid #eef0f4;
+  border-radius: 16px;
+
+  box-shadow: 0 4px 16px rgba(17, 24, 39, 0.04);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.flight-widget:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
+}
+
+.flight-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background-color: #eff6ff;
+  color: #2563eb;
+
+  font-size: 18px;
+}
+
+.flight-route {
+  display: flex;
+  align-items: center;
+
+  gap: 20px;
+
+  margin: 30px 0;
+}
+
+.airport {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 80px;
+}
+
+.airport strong {
+  color: #111827;
+  font-size: 24px;
+}
+
+.airport span {
+  margin-top: 3px;
+
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.airport small {
+  margin-top: 8px;
+
+  color: #374151;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.airport-arrival {
+  text-align: right;
+}
+
+.route-line {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.route-duration {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.route-visual {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.route-visual span {
+  flex: 1;
+
+  height: 2px;
+
+  background-color: #dbeafe;
+}
+
+.route-visual i {
+  color: #2563eb;
+  font-size: 14px;
+}
+
+.flight-status {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #eef0f4;
+
+  font-size: 13px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background-color: #22c55e;
+}
+
+.flight-status strong {
+  color: #16a34a;
+}
+
+.flight-status > span:last-child {
+  margin-left: auto;
+
+  color: #9ca3af;
+}
