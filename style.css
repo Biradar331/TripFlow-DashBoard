@@ -1050,6 +1050,14 @@ body {
   border-color: #2563eb;
 }
 
+.check-icon i {
+  display: none;
+}
+
+.checklist-item.completed .check-icon i {
+  display: block;
+}
+
 .checklist-progress {
   display: flex;
   align-items: center;
