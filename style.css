@@ -1068,3 +1068,20 @@ body {
   color: #2563eb;
   font-size: 13px;
 }
+
+/* ========== Responsive Widgets ========== */
+
+@media (max-width: 768px) {
+  .widgets-section {
+    margin: 20px;
+  }
+
+  .widget-header h2 {
+    font-size: 24px;
+  }
+
+  .widgets-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
