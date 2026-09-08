@@ -25,3 +25,15 @@ checklistItems.forEach(function (item) {
     updateChecklistProgress();
   });
 });
+
+// Adding interaction to the "view Itenerary" button.
+
+const viewItineraryBtn = document.querySelector("#viewItineraryBtn");
+
+const timelineSection = document.querySelector("#timeline");
+
+viewItineraryBtn.addEventListener("click", function () {
+  timelineSection.scrollIntoView({
+    behavior: "smooth",
+  });
+});
