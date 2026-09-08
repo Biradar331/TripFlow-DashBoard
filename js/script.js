@@ -37,3 +37,11 @@ viewItineraryBtn.addEventListener("click", function () {
     behavior: "smooth",
   });
 });
+
+const notificationBtn = document.querySelector("#notificationBtn");
+
+const notificationPanel = document.querySelector("#notificationPanel");
+
+notificationBtn.addEventListener("click", function () {
+  notificationPanel.classList.toggle("show");
+});

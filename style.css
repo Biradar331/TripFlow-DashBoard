@@ -95,6 +95,14 @@ body {
   color: #374151;
 }
 
+.notification-panel {
+  display: none;
+}
+
+.notification-panel.show {
+  display: block;
+}
+
 .profile {
   display: flex;
   align-items: center;
