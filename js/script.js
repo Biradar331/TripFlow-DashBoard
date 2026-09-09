@@ -45,3 +45,12 @@ const notificationPanel = document.querySelector("#notificationPanel");
 notificationBtn.addEventListener("click", function () {
   notificationPanel.classList.toggle("show");
 });
+
+document.addEventListener("click", function (event) {
+  if (
+    !notificationBtn.contains(event.target) &&
+    !notificationPanel.contains(event.target)
+  ) {
+    notificationPanel.classList.remove("show");
+  }
+});
