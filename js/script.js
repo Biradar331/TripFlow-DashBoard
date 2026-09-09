@@ -54,3 +54,5 @@ document.addEventListener("click", function (event) {
     notificationPanel.classList.remove("show");
   }
 });
+
+const notificationBadge = document.querySelector("#notificationBadge");
