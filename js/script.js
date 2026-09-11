@@ -56,3 +56,10 @@ document.addEventListener("click", function (event) {
 });
 
 const notificationBadge = document.querySelector("#notificationBadge");
+
+const notificationItems = document.querySelectorAll(".notification-item");
+
+function updateNotificationBadge() {
+  notificationBadge.textContent = notificationItems.length;
+}
+updateNotificationBadge();
