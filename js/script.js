@@ -42,8 +42,19 @@ const notificationBtn = document.querySelector("#notificationBtn");
 
 const notificationPanel = document.querySelector("#notificationPanel");
 
+const notificationBadge = document.querySelector("#notificationBadge");
+
+const notificationItems = document.querySelectorAll(".notification-item");
+
 notificationBtn.addEventListener("click", function () {
   notificationPanel.classList.toggle("show");
+  if (notificationPanel.classList.contains("show")) {
+    notificationItems.forEach(function (notification) {
+      notification.dataset.read = "true";
+    });
+
+    updateNotificationBadge();
+  }
 });
 
 document.addEventListener("click", function (event) {
@@ -55,11 +66,14 @@ document.addEventListener("click", function (event) {
   }
 });
 
-const notificationBadge = document.querySelector("#notificationBadge");
-
-const notificationItems = document.querySelectorAll(".notification-item");
-
 function updateNotificationBadge() {
-  notificationBadge.textContent = notificationItems.length;
+  const unreadNotifications = document.querySelectorAll(
+    '.notification-item[data-read="false"]',
+  );
+
+  notificationBadge.textContent = unreadNotifications.length;
+
+  notificationBadge.style.display =
+    unreadNotifications.length > 0 ? "flex" : "none";
 }
 updateNotificationBadge();
