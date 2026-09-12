@@ -1,7 +1,24 @@
+// ==========================================
+// CHECKLIST
+// ==========================================
+
+// Find all checklist items from the HTML
 const checklistItems = document.querySelectorAll(".checklist-item");
 
+// Key used to save and retrieve checklist completion data
+const checklistStorageKey = "tripflowChecklist";
+
+// Find the element that displays the completed item count
 const completedCount = document.querySelector(".completed-count");
+
+// Find the element that displays the completion percentage
 const completedPercentage = document.querySelector(".completed-percentage");
+
+const notificationsRead = localStorage.getItem("notificationsRead");
+
+// ==========================================
+// CHECKLIST PROGRESS
+// ==========================================
 
 function updateChecklistProgress() {
   const completedItems = document.querySelectorAll(".checklist-item.completed");
@@ -19,12 +36,45 @@ function updateChecklistProgress() {
 
 updateChecklistProgress();
 
+// Save the current completed/not-completed state of every checklist item
+function saveChecklistProgress() {
+  const checklistState = [];
+
+  checklistItems.forEach(function (item) {
+    checklistState.push(item.classList.contains("completed"));
+  });
+
+  localStorage.setItem(checklistStorageKey, JSON.stringify(checklistState));
+}
+
 checklistItems.forEach(function (item) {
   item.addEventListener("click", function () {
     item.classList.toggle("completed");
     updateChecklistProgress();
+    saveChecklistProgress();
   });
 });
+
+// Restore the checklist state saved in localStorage
+function loadChecklistProgress() {
+  const savedChecklist = localStorage.getItem(checklistStorageKey);
+
+  if (savedChecklist) {
+    const checklistState = JSON.parse(savedChecklist);
+
+    checklistItems.forEach(function (item, index) {
+      if (checklistState[index]) {
+        item.classList.add("completed");
+      }
+    });
+  }
+}
+
+// Restore previously saved checklist state before calculating progress
+loadChecklistProgress();
+
+// Calculate the initial checklist progress
+updateChecklistProgress();
 
 // Adding interaction to the "view Itenerary" button.
 
@@ -54,6 +104,8 @@ notificationBtn.addEventListener("click", function () {
     });
 
     updateNotificationBadge();
+
+    localStorage.setItem("notificationsRead", "true");
   }
 });
 
@@ -66,6 +118,7 @@ document.addEventListener("click", function (event) {
   }
 });
 
+// Update the notification badge based on the number of unread notifications
 function updateNotificationBadge() {
   const unreadNotifications = document.querySelectorAll(
     '.notification-item[data-read="false"]',
@@ -76,4 +129,11 @@ function updateNotificationBadge() {
   notificationBadge.style.display =
     unreadNotifications.length > 0 ? "flex" : "none";
 }
+
+if (notificationsRead === "true") {
+  notificationItems.forEach(function (notification) {
+    notification.dataset.read = "true";
+  });
+}
+
 updateNotificationBadge();
