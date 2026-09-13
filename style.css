@@ -1022,6 +1022,50 @@ body {
 
 /* ========== Checklist Widget ========== */
 
+/* Layout for the new checklist input and Add button */
+.checklist-add {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Style the input where the user types a new task */
+.checklist-add input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+/* Highlight the input when the user clicks inside it */
+.checklist-add input:focus {
+  border-color: #2563eb;
+}
+
+/* Style the Add button */
+.checklist-add button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #2563eb;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Give the Add button a small hover effect */
+.checklist-add button:hover {
+  background-color: #1d4ed8;
+}
+
 .checklist-widget {
   padding: 28px;
 
