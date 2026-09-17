@@ -5,6 +5,99 @@
 // Key used to save and retrieve checklist completion data
 const checklistStorageKey = "tripflowChecklistV2";
 
+// Store all checklist tasks in one JavaScript array
+let checklistData = [];
+
+// Create the visual DOM element for one checklist item
+function createChecklistItem(task) {
+  const checklistItem = document.createElement("div");
+
+  checklistItem.classList.add("checklist-item");
+
+  checklistItem.dataset.id = task.id;
+
+  if (task.completed) {
+    checklistItem.classList.add("completed");
+  }
+
+  checklistItem.innerHTML = `
+  <span class="check-icon">
+    <i class="fa-solid fa-check"></i>
+  </span>
+
+  <span class="check-text">${task.text}</span>
+
+  <button class="delete-checklist-btn" type="button">
+    <i class="fa-solid fa-trash"></i>
+  </button>`;
+
+  // Remove this task from checklistData when the delete button is clicked
+  const deleteBtn = checklistItem.querySelector(".delete-checklist-btn");
+
+  deleteBtn.addEventListener("click", function (event) {
+    event.stopPropagation();
+
+    const taskId = Number(checklistItem.dataset.id);
+
+    checklistData = checklistData.filter(function (task) {
+      return task.id !== taskId;
+    });
+
+    saveChecklistProgress();
+
+    renderChecklist();
+
+    updateChecklistProgress();
+  });
+
+  // Handle completing and uncompleting this task
+  checklistItem.addEventListener("click", function () {
+    const taskId = Number(checklistItem.dataset.id);
+
+    const task = checklistData.find(function (task) {
+      return task.id === taskId;
+    });
+
+    if (!task) {
+      return;
+    }
+
+    task.completed = !task.completed;
+
+    saveChecklistProgress();
+
+    renderChecklist();
+
+    updateChecklistProgress();
+  });
+
+  return checklistItem;
+}
+
+// Render the checklist data and show an empty state when there are no tasks
+function renderChecklist() {
+  const checklistContainer = document.querySelector(".checklist-items");
+
+  checklistContainer.innerHTML = "";
+
+  if (checklistData.length === 0) {
+    checklistContainer.innerHTML = `
+      <div class="checklist-empty">
+        <i class="fa-regular fa-clipboard"></i>
+        <p>No tasks yet. Add something to prepare!</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  checklistData.forEach(function (task) {
+    const checklistItem = createChecklistItem(task);
+
+    checklistContainer.appendChild(checklistItem);
+  });
+}
+
 // Find the element that displays the completed item count
 const completedCount = document.querySelector(".completed-count");
 
@@ -17,76 +110,59 @@ const notificationsRead = localStorage.getItem("notificationsRead");
 // CHECKLIST PROGRESS
 // ==========================================
 
+// Calculate and display checklist completion progress
 function updateChecklistProgress() {
-  const completedItems = document.querySelectorAll(".checklist-item.completed");
+  const totalItems = checklistData.length;
 
-  const completedTotal = completedItems.length;
+  const completedTotal = checklistData.filter(function (task) {
+    return task.completed;
+  }).length;
 
-  const totalItems = document.querySelectorAll(".checklist-item").length;
-
-  const percentage = Math.round((completedTotal / totalItems) * 100);
+  const percentage =
+    totalItems === 0 ? 0 : Math.round((completedTotal / totalItems) * 100);
 
   completedCount.textContent = `${completedTotal} of ${totalItems} completed`;
 
   completedPercentage.textContent = `${percentage}%`;
 }
 
-// Save both the task text and completion state of every checklist item
+// Save the current checklist data to localStorage
 function saveChecklistProgress() {
-  const currentItems = document.querySelectorAll(".checklist-item");
+  localStorage.setItem(checklistStorageKey, JSON.stringify(checklistData));
+}
 
-  const checklistState = [];
+// Restore saved checklist data or initialize it from the default HTML tasks
+function loadChecklistProgress() {
+  const savedChecklist = localStorage.getItem(checklistStorageKey);
 
-  currentItems.forEach(function (item) {
-    checklistState.push({
-      text: item.querySelector(".check-text").textContent,
+  if (savedChecklist) {
+    checklistData = JSON.parse(savedChecklist);
+
+    checklistData.forEach(function (task) {
+      if (!task.id) {
+        task.id = Date.now() + Math.random();
+      }
+    });
+
+    saveChecklistProgress();
+
+    renderChecklist();
+    return;
+  }
+
+  const initialChecklistItems = document.querySelectorAll(".checklist-item");
+
+  initialChecklistItems.forEach(function (item, index) {
+    checklistData.push({
+      id: Date.now() + index,
+      text: item.querySelector(".check-text").textContent.trim(),
       completed: item.classList.contains("completed"),
     });
   });
 
-  localStorage.setItem(checklistStorageKey, JSON.stringify(checklistState));
-}
+  saveChecklistProgress();
 
-// Restore the checklist state saved in localStorage
-// Restore the complete checklist from localStorage
-function loadChecklistProgress() {
-  const savedChecklist = localStorage.getItem(checklistStorageKey);
-
-  if (!savedChecklist) {
-    return;
-  }
-
-  const checklistState = JSON.parse(savedChecklist);
-
-  const checklistContainer = document.querySelector(".checklist-items");
-
-  checklistContainer.innerHTML = "";
-
-  checklistState.forEach(function (item) {
-    const checklistItem = document.createElement("div");
-
-    checklistItem.classList.add("checklist-item");
-
-    if (item.completed) {
-      checklistItem.classList.add("completed");
-    }
-
-    checklistItem.innerHTML = `
-            <span class="check-icon">
-                <i class="fa-solid fa-check"></i>
-            </span>
-            <span class="check-text">${item.text}</span>
-        `;
-
-    checklistItem.addEventListener("click", function () {
-      checklistItem.classList.toggle("completed");
-
-      updateChecklistProgress();
-      saveChecklistProgress();
-    });
-
-    checklistContainer.appendChild(checklistItem);
-  });
+  renderChecklist();
 }
 
 // Connect the new checklist input and Add button to JavaScript
@@ -94,67 +170,29 @@ const checklistInput = document.querySelector("#checklistInput");
 
 const addChecklistBtn = document.querySelector("#addChecklistBtn");
 
-// Create a new checklist item and add it to the existing checklist
+// Create a new task, add it to checklistData, save it, and render the checklist
 function addChecklistItem() {
-  // Get the text typed by the user and remove unnecessary spaces
   const taskText = checklistInput.value.trim();
 
-  // Stop if the user tries to add an empty task
   if (taskText === "") {
     return;
   }
 
-  // Create the main container for the new checklist item
-  const checklistItem = document.createElement("div");
+  const newTask = {
+    id: Date.now(),
+    text: taskText,
+    completed: false,
+  };
 
-  // Give the new element the same class as our existing checklist items
-  checklistItem.classList.add("checklist-item");
+  checklistData.push(newTask);
 
-  // Create the circular check icon container
-  const checkIcon = document.createElement("span");
+  saveChecklistProgress();
 
-  checkIcon.classList.add("check-icon");
+  renderChecklist();
 
-  // Create the Font Awesome check icon
-  const icon = document.createElement("i");
-
-  icon.classList.add("fa-solid", "fa-check");
-
-  // Put the icon inside the circular check container
-  checkIcon.appendChild(icon);
-
-  // Create the text element for the task
-  const checkText = document.createElement("span");
-
-  checkText.classList.add("check-text");
-
-  // Put the user's typed task inside the text element
-  checkText.textContent = taskText;
-
-  // Put the check icon and task text inside the checklist item
-  checklistItem.appendChild(checkIcon);
-  checklistItem.appendChild(checkText);
-
-  // Add the completed/uncompleted click behavior to the new item
-  checklistItem.addEventListener("click", function () {
-    checklistItem.classList.toggle("completed");
-
-    updateChecklistProgress();
-
-    saveChecklistProgress();
-  });
-
-  // Add the newly created item to the checklist container
-  document.querySelector(".checklist-items").appendChild(checklistItem);
-
-  // Clear the input after successfully adding the task
-  checklistInput.value = "";
-
-  // Update the progress because the total number of items changed
   updateChecklistProgress();
 
-  // Save the updated checklist state
-  saveChecklistProgress();
+  checklistInput.value = "";
 }
 
 // Run addChecklistItem() whenever the user clicks the Add button
@@ -167,18 +205,6 @@ checklistInput.addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
     addChecklistItem();
   }
-});
-
-// Add click behavior to the checklist items already present in HTML
-const initialChecklistItems = document.querySelectorAll(".checklist-item");
-
-initialChecklistItems.forEach(function (item) {
-  item.addEventListener("click", function () {
-    item.classList.toggle("completed");
-
-    updateChecklistProgress();
-    saveChecklistProgress();
-  });
 });
 
 // Restore previously saved checklist state before calculating progress

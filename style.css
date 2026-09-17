@@ -1184,6 +1184,39 @@ body {
   font-size: 13px;
 }
 
+/* Empty state shown when the checklist has no tasks */
+.checklist-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px 10px;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.checklist-empty i {
+  font-size: 28px;
+}
+
+.checklist-empty p {
+  font-size: 13px;
+}
+
+.delete-checklist-btn {
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.delete-checklist-btn:hover {
+  color: #ef4444;
+}
+
 /* ========== Responsive Widgets ========== */
 
 @media (max-width: 768px) {
