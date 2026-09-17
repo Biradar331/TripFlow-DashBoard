@@ -162,6 +162,13 @@ addChecklistBtn.addEventListener("click", function () {
   addChecklistItem();
 });
 
+// Allow users to add a checklist item by pressing Enter
+checklistInput.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    addChecklistItem();
+  }
+});
+
 // Add click behavior to the checklist items already present in HTML
 const initialChecklistItems = document.querySelectorAll(".checklist-item");
 
