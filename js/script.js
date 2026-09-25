@@ -280,16 +280,18 @@ updateNotificationBadge();
 // ==========================================
 // Track whether weather data is currently being loaded
 
-let weatherLoading = false;
-
-// Store the current weather information in one data object
-const weatherData = {
-  location: "Bali, Indonesia",
-  temperature: 28,
-  condition: "Partly Cloudy",
-  humidity: 72,
-  windSpeed: 14,
-  icon: "fa-cloud-sun",
+// Store the complete Weather component state in one object
+const weatherState = {
+  loading: false,
+  error: false,
+  data: {
+    location: "Bali, Indonesia",
+    temperature: 28,
+    condition: "Partly Cloudy",
+    humidity: 72,
+    windSpeed: 14,
+    icon: "fa-cloud-sun",
+  },
 };
 
 const weatherStates = [
@@ -319,6 +321,7 @@ const weatherStates = [
 const weatherRefreshBtn = document.querySelector("#weatherRefreshBtn");
 
 // Display weatherData values in the Weather widget
+// Render the current Weather state into the UI
 function renderWeather() {
   const weatherLocation = document.querySelector("#weatherLocation");
   const weatherTemperature = document.querySelector("#weatherTemperature");
@@ -327,44 +330,62 @@ function renderWeather() {
   const weatherHumidity = document.querySelector("#weatherHumidity");
   const weatherWind = document.querySelector("#weatherWind");
 
-  if (weatherLoading) {
+  if (weatherState.loading) {
     weatherCondition.textContent = "Loading...";
     return;
   }
 
+  if (weatherState.error) {
+    weatherCondition.textContent = "Unable to fetch weather";
+    return;
+  }
+
+  const weatherData = weatherState.data;
+
   weatherLocation.textContent = weatherData.location;
-
   weatherTemperature.textContent = weatherData.temperature;
-
   weatherCondition.textContent = weatherData.condition;
-
   weatherHumidity.textContent = `${weatherData.humidity}%`;
-
   weatherWind.textContent = `${weatherData.windSpeed} km/h`;
-
   weatherIcon.className = `fa-solid ${weatherData.icon} weather-icon`;
 }
 
 renderWeather();
 
 // Refresh the weather data
+// Refresh weather data and handle loading, success, and error states
 weatherRefreshBtn.addEventListener("click", function () {
-  weatherLoading = true;
+  weatherState.loading = true;
+  weatherState.error = false;
 
   renderWeather();
 
   setTimeout(function () {
+    const hasError = Math.random() < 0.2;
+
+    if (hasError) {
+      weatherState.loading = false;
+      weatherState.error = true;
+
+      renderWeather();
+
+      alert("Unable to fetch weather. Please try again.");
+
+      return;
+    }
+
     const randomIndex = Math.floor(Math.random() * weatherStates.length);
 
     const newWeather = weatherStates[randomIndex];
 
-    weatherData.temperature = newWeather.temperature;
-    weatherData.condition = newWeather.condition;
-    weatherData.humidity = newWeather.humidity;
-    weatherData.windSpeed = newWeather.windSpeed;
-    weatherData.icon = newWeather.icon;
+    weatherState.data.temperature = newWeather.temperature;
+    weatherState.data.condition = newWeather.condition;
+    weatherState.data.humidity = newWeather.humidity;
+    weatherState.data.windSpeed = newWeather.windSpeed;
+    weatherState.data.icon = newWeather.icon;
 
-    weatherLoading = false;
+    weatherState.loading = false;
+    weatherState.error = false;
 
     renderWeather();
 
