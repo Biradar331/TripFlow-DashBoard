@@ -160,32 +160,42 @@
             <div class="widget-top">
               <div>
                 <span class="widget-label">WEATHER</span>
-                <h3>Bali, Indonesia</h3>
+                <h3 id="weatherLocation">Bali, Indonesia</h3>
               </div>
 
-              <i class="fa-solid fa-cloud-sun weather-icon"></i>
+              <i
+                class="fa-solid fa-cloud-sun weather-icon"
+                id="weatherIcon"
+              ></i>
             </div>
 
             <div class="weather-main">
               <div class="temperature">
-                <span>28</span>
+                <span id="weatherTemperature">28</span>
                 <sup>°C</sup>
               </div>
 
-              <p>Partly Cloudy</p>
+              <p id="weatherCondition">Partly Cloudy</p>
             </div>
 
             <div class="weather-details">
               <div class="weather-detail">
                 <span>Humidity</span>
-                <strong>72%</strong>
+                <strong id="weatherHumidity">72%</strong>
               </div>
 
               <div class="weather-detail">
                 <span>Wind</span>
-                <strong>14 km/h</strong>
+                <strong id="weatherWind">14 km/h</strong>
               </div>
             </div>
+            <button
+              class="weather-refresh-btn"
+              id="weatherRefreshBtn"
+              type="button"
+            >
+              <i class="fa-solid fa-rotate"></i> Refresh
+            </button>
           </div>
 
           <div class="budget-widget">

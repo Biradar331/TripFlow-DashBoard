@@ -761,6 +761,24 @@ body {
   font-size: 14px;
 }
 
+.weather-refresh-btn {
+  margin-top: 20px;
+  border: none;
+  background: transparent;
+  color: #2563eb;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.weather-refresh-btn i {
+  margin-right: 6px;
+}
+
+.weather-refresh-btn:hover {
+  color: #1d4ed8;
+}
+
 /* ========== Budget Widget ========== */
 
 .budget-widget {

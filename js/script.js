@@ -274,3 +274,100 @@ if (notificationsRead === "true") {
 }
 
 updateNotificationBadge();
+
+// ==========================================
+// WEATHER
+// ==========================================
+// Track whether weather data is currently being loaded
+
+let weatherLoading = false;
+
+// Store the current weather information in one data object
+const weatherData = {
+  location: "Bali, Indonesia",
+  temperature: 28,
+  condition: "Partly Cloudy",
+  humidity: 72,
+  windSpeed: 14,
+  icon: "fa-cloud-sun",
+};
+
+const weatherStates = [
+  {
+    temperature: 28,
+    condition: "Partly Cloudy",
+    humidity: 72,
+    windSpeed: 14,
+    icon: "fa-cloud-sun",
+  },
+  {
+    temperature: 30,
+    condition: "Sunny",
+    humidity: 65,
+    windSpeed: 11,
+    icon: "fa-sun",
+  },
+  {
+    temperature: 26,
+    condition: "Light Rain",
+    humidity: 80,
+    windSpeed: 18,
+    icon: "fa-cloud-rain",
+  },
+];
+
+const weatherRefreshBtn = document.querySelector("#weatherRefreshBtn");
+
+// Display weatherData values in the Weather widget
+function renderWeather() {
+  const weatherLocation = document.querySelector("#weatherLocation");
+  const weatherTemperature = document.querySelector("#weatherTemperature");
+  const weatherCondition = document.querySelector("#weatherCondition");
+  const weatherIcon = document.querySelector("#weatherIcon");
+  const weatherHumidity = document.querySelector("#weatherHumidity");
+  const weatherWind = document.querySelector("#weatherWind");
+
+  if (weatherLoading) {
+    weatherCondition.textContent = "Loading...";
+    return;
+  }
+
+  weatherLocation.textContent = weatherData.location;
+
+  weatherTemperature.textContent = weatherData.temperature;
+
+  weatherCondition.textContent = weatherData.condition;
+
+  weatherHumidity.textContent = `${weatherData.humidity}%`;
+
+  weatherWind.textContent = `${weatherData.windSpeed} km/h`;
+
+  weatherIcon.className = `fa-solid ${weatherData.icon} weather-icon`;
+}
+
+renderWeather();
+
+// Refresh the weather data
+weatherRefreshBtn.addEventListener("click", function () {
+  weatherLoading = true;
+
+  renderWeather();
+
+  setTimeout(function () {
+    const randomIndex = Math.floor(Math.random() * weatherStates.length);
+
+    const newWeather = weatherStates[randomIndex];
+
+    weatherData.temperature = newWeather.temperature;
+    weatherData.condition = newWeather.condition;
+    weatherData.humidity = newWeather.humidity;
+    weatherData.windSpeed = newWeather.windSpeed;
+    weatherData.icon = newWeather.icon;
+
+    weatherLoading = false;
+
+    renderWeather();
+
+    alert("Weather updated successfully!");
+  }, 1000);
+});
